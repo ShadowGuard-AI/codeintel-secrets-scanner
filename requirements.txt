@@ -1,4 +1,3 @@
-bandit>=1.0.0
-flake8>=1.0.0
-pylint>=1.0.0
-pyre-check>=1.0.0
+# main.py needs nothing beyond the standard library: argparse,
+# fnmatch, logging, os, re, sys and typing. The bandit, flake8,
+# pylint and pyre-check lines that stood here before were unused.

@@ -1,8 +1,8 @@
 import argparse
 import logging
 import os
+import fnmatch
 import re
-import subprocess
 import sys
 from typing import List, Tuple
 
@@ -50,7 +50,11 @@ def is_file_excluded(file_path: str, exclude_patterns: List[str]) -> bool:
         bool: True if the file should be excluded, False otherwise.
     """
     for pattern in exclude_patterns:
-        if re.search(pattern, file_path):
+        # The help text promises glob patterns such as *.txt. Feeding
+        # those to re.search raised "nothing to repeat" and killed the
+        # scan, so exclusions are matched as globs, against the full
+        # path and against the bare file name.
+        if fnmatch.fnmatch(file_path, pattern) or fnmatch.fnmatch(os.path.basename(file_path), pattern):
             return True
     return False
 
@@ -131,8 +135,17 @@ def main():
         if pattern_name in DEFAULT_PATTERNS:
             patterns_to_use[pattern_name] = DEFAULT_PATTERNS[pattern_name]
         else:
-            logging.warning(f"Pattern '{pattern_name}' not found in default patterns.  Using as literal string.")
-            patterns_to_use[pattern_name] = pattern_name  # Treat as literal string
+            # Unknown names are custom regexes, as the help text says.
+            # Compile once here: an invalid pattern used to surface
+            # once per file as a misleading "Error reading file" and
+            # the scan still exited 0 with no results at all.
+            try:
+                re.compile(pattern_name)
+            except re.error as e:
+                logging.error(f"Pattern '{pattern_name}' is not a valid regex: {e}")
+                sys.exit(1)
+            logging.warning(f"Pattern '{pattern_name}' not found in default patterns.  Using as a custom regex.")
+            patterns_to_use[pattern_name] = pattern_name
 
     if args.verbose:
         logging.info(f"Scanning repository: {args.repository_path}")
@@ -149,6 +162,7 @@ def main():
             logging.info(f"Results saved to {args.output}")
         except Exception as e:
             logging.error(f"Error writing to output file {args.output}: {e}")
+            sys.exit(1)
     else:
         for file_path, pattern_name, line, line_number in results:
             print(f"File: {file_path}, Pattern: {pattern_name}, Line: {line}, Line Number: {line_number}")
