@@ -1,3 +1,5 @@
+![Banner](banner.png)
+
 # codeintel-Secrets-Scanner
 A command-line tool that scans code repositories for accidentally committed secrets (API keys, passwords, etc.) using regular expressions and entropy analysis (e.g., leveraging `detect-secrets` library or a custom implementation). - Focused on Tools for static code analysis, vulnerability scanning, and code quality assurance
 
