@@ -59,6 +59,20 @@ def is_file_excluded(file_path: str, exclude_patterns: List[str]) -> bool:
     return False
 
 
+def mask_line(line: str, match) -> str:
+    """Return the line with secret material replaced by a fixed mask.
+
+    The matched span is masked first. Some patterns match only a
+    keyword (the PASSWORD pattern matches the word password), so a
+    value sitting after an = or : sign on the same line is masked as
+    well; printing the whole line used to put that value in the
+    console output and in the -o file in clear.
+    """
+    masked = line[:match.start()] + "***" + line[match.end():]
+    masked = re.sub(r"([=:]\s*[\"']?)[^\s\"',;]+", r"\1***", masked)
+    return masked
+
+
 def scan_file(file_path: str, patterns: dict) -> List[Tuple[str, str, int]]:
     """
     Scans a single file for secrets based on the provided patterns.
@@ -77,7 +91,7 @@ def scan_file(file_path: str, patterns: dict) -> List[Tuple[str, str, int]]:
                 for pattern_name, pattern_regex in patterns.items():
                     match = re.search(pattern_regex, line)
                     if match:
-                        results.append((pattern_name, line.strip(), i + 1))  # Line number starts from 1
+                        results.append((pattern_name, mask_line(line, match).strip(), i + 1))  # Line number starts from 1
     except FileNotFoundError:
         logging.error(f"File not found: {file_path}")
     except Exception as e:
