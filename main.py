@@ -14,6 +14,10 @@ DEFAULT_PATTERNS = {
     "API_KEY": r"[A-Za-z0-9]{32,45}",  # Example API key pattern
     "PASSWORD": r"password|pwd|secret",  # Example password pattern
     "AWS_ACCESS_KEY_ID": r"AKIA[0-9A-Z]{16}",
+    # This pattern is only a shape: any 40 character run from that
+    # alphabet matches, including hashes and long identifiers that
+    # are not secrets at all. I keep it because the name of the
+    # pattern tells the reader to judge each hit by hand.
     "AWS_SECRET_ACCESS_KEY": r"[a-zA-Z0-9/+]{40}"
 }
 
@@ -89,6 +93,9 @@ def scan_file(file_path: str, patterns: dict) -> List[Tuple[str, str, int]]:
         with open(file_path, 'r', encoding='utf-8') as f:
             for i, line in enumerate(f):
                 for pattern_name, pattern_regex in patterns.items():
+                    # I record the first match of each pattern on a line, so a
+                    # line holding two different keys reports one of them per
+                    # pattern. The line number is what a reader follows up.
                     match = re.search(pattern_regex, line)
                     if match:
                         results.append((pattern_name, mask_line(line, match).strip(), i + 1))  # Line number starts from 1
@@ -181,6 +188,9 @@ def main():
         for file_path, pattern_name, line, line_number in results:
             print(f"File: {file_path}, Pattern: {pattern_name}, Line: {line}, Line Number: {line_number}")
 
+    # Findings are printed or saved, and that is all. A scan that
+    # found secrets exits 0 like a clean one, so the output text
+    # is the only signal a caller gets from this program.
     if not results and args.verbose:
         logging.info("No secrets found.")
 
