@@ -3,104 +3,51 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>codeintel-secrets-scanner: a boardwalk over black water</title>
+<title>codeintel-secrets-scanner</title>
 <style>
-@font-face { font-family: 'Besley'; src: url('fonts/Besley.ttf') format('truetype'); }
-@font-face { font-family: 'Barlow'; src: url('fonts/Barlow.ttf') format('truetype'); }
-:root { --rust:#a5502a; --gold:#d9a441; --loam:#3e2c1c; --cream:#f3ead3; --ground:#e9dfc8; --ink:#1d1710; }
+@font-face { font-family: 'Courgette'; src: url('fonts/Courgette.ttf') format('truetype'); }
+@font-face { font-family: 'Kosugi Maru'; src: url('fonts/KosugiMaru.ttf') format('truetype'); }
+:root { --bg:#22302b; --panel:#efe8d8; --ink:#1d2420; --accent:#2e5d50; }
 * { box-sizing: border-box; }
-body { margin:0; background:var(--ground); color:var(--ink); font-family:'Barlow',sans-serif; line-height:1.55; }
-header { padding:2.4rem 6vw 0.6rem; }
-h1, h2 { font-family:'Besley',serif; color:var(--loam); }
-h1 { font-size:2rem; margin:0.4rem 0; }
-.hero { width:100%; border:3px solid var(--loam); }
-.logo { width:150px; float:right; margin:0 0 1rem 1rem; }
+body { margin:0; background:var(--bg); color:var(--ink); font-family:'Kosugi Maru',sans-serif; line-height:1.55; }
+header { padding:2rem 6vw 0.5rem; }
+h1, h2 { font-family:'Courgette',serif; color:var(--panel); }
+h1 { font-size:2rem; margin:0.5rem 0; overflow-wrap:anywhere; }
+.tag { color:var(--panel); opacity:0.9; max-width:60ch; }
+.hero { width:100%; border:3px solid var(--accent); }
+.logo { width:170px; float:right; margin:0 0 1rem 1rem; border:2px solid var(--accent); background:var(--panel); }
 main { padding:0 6vw 2rem; }
-.bay { background:var(--cream); border:2px solid var(--loam); padding:1.1rem 1.3rem; margin:1.2rem 0; position:relative; }
-.bay::after { content:""; position:absolute; top:0; right:0; border-style:solid; border-width:0 22px 22px 0; border-color:var(--ground) var(--ground) var(--loam) var(--loam); }
-.callout { background:#e3d3ae; border-left:6px solid var(--rust); padding:0.7rem 1rem; margin:0.9rem 0; }
-.callout h3 { font-family:'Besley',serif; color:var(--rust); margin:0 0 0.3rem; font-size:1rem; }
-.fault { color:var(--rust); font-weight:600; }
-code { background:#ded0ac; padding:0.05rem 0.3rem; }
-.plate { display:inline-block; background:var(--cream); border:2px solid var(--loam); color:var(--loam); font-family:'Besley',serif; padding:0.55rem 1.2rem 0.55rem 1.2rem; margin:0.3rem 0.4rem 0.3rem 0; text-decoration:none; position:relative; }
-.plate:hover { box-shadow: inset 0 3px 0 var(--gold); }
-a { color:var(--loam); }
-a::before { content:""; display:inline-block; width:9px; height:9px; border-radius:50%; background:var(--rust); margin-right:0.4rem; }
-a:hover::before { background:var(--cream); border:1px solid var(--rust); }
-table { border-collapse:collapse; width:100%; }
-td, th { border:1px solid var(--loam); padding:0.4rem 0.6rem; text-align:left; }
-.divider { border:none; border-top:2px solid var(--loam); margin:1.6rem 0; }
-footer { padding:0 6vw 2.4rem; color:var(--loam); }
+.bay { background:var(--panel); border:2px solid var(--accent); padding:1.1rem 1.3rem; margin:1.2rem 0; }
+.bay img.wide { width:100%; }
+.fault { border-left:6px solid var(--accent); padding-left:0.8rem; }
+code { background:rgba(0,0,0,0.08); padding:0.05rem 0.3rem; }
+footer { padding:0 6vw 2.4rem; color:var(--panel); }
+footer a { color:var(--panel); }
 </style>
 </head>
 <body>
 <header>
-<img class="hero" src="assets/intro-banner.png" alt="Boardwalk over black water with pitcher plants and sundews, no lettering">
-<img class="logo" src="assets/logo.png" alt="One hooded pitcher plant above dark water, the name on a herbarium label below">
-<p>Herbarium label, first bay of the walk.</p>
+<img class="hero" src="assets/intro-banner.png" alt="Hands covering a found pearl with a twist of plain cloth close up, an opened oyster shell beside it and rows of opened shells behind">
 <h1>codeintel-secrets-scanner</h1>
-<p>A boardwalk with labelled stops over black water. The labels may be read freely. What the pitchers hold is never shown in clear.</p>
-<nav>
-<a class="plate" href="#patterns">Walk the Repository</a>
-<a class="plate" href="#patterns">Show the Four Patterns</a>
-<a class="plate" href="#settings">List the Excluded Files</a>
-<a class="plate" href="#settings">Save the Masked Report</a>
-</nav>
-<img class="hero" src="assets/banner.png" alt="Boardwalk crossing a bog, one sign on the rail carrying the name">
+<p class="tag">Oyster sorting deck photography: shell after shell opened along the line, each find reported with the pearl covered.</p>
 </header>
 <main>
-<section class="bay" id="what">
-<h2>Masked in Console and in File Alike</h2>
-<p>codeintel-secrets-scanner is a command line tool that scans code repositories for accidentally committed secrets, such as API keys and passwords, using regular expressions. The README states the purpose in full: <q>A command-line tool that scans code repositories for accidentally committed secrets (API keys, passwords, etc.) using regular expressions. There is no entropy analysis and no detect-secrets library in the code.</q> There is no entropy analysis in the code and no detect secrets library in the code, a narrowing the README itself prints, and this bay prints it beside the purpose rather than beneath it.</p>
-<p>In console output and in the output file alike, the matched span, and any value sitting after an equals sign or a colon on the same line, are replaced with three asterisks (<code>***</code>), while the rest of the line, the file, the pattern name, and the line number are still reported. The masking exists precisely so that a report can be followed up by file and by line without carrying the found matter onward in clear.</p>
+<section class="bay">
+<img class="logo" src="assets/logo.png" alt="One opened oyster shell with a pearl resting in a small plain brass cup beside it on wet deck boards, inside a pale ring">
+
+<p>This tool scans a repository line by line for four secret shapes. Run it as <code>python3 main.py REPOSITORY_PATH</code>; the positional must be a valid directory (anything else exits 1 with a logged error). Options: <code>-p</code> naming patterns, <code>-e</code> taking exclusion globs, <code>-v</code> for verbose, <code>-r</code> for recursion, and <code>-o</code> writing results to a file.</p>
+<p>The four default patterns are an API key shape of 32 to 45 word characters, the bare words password, pwd or secret, the AWS access key shape AKIA plus sixteen characters, and an AWS secret shape that is any run of forty characters from its alphabet, a shape that also matches hashes and long identifiers that are not secrets at all, so every hit under that name must be judged by hand. Only the first match of each pattern on a line is recorded.</p>
+<p>What is reported is masked: the matched span is replaced with ***, and any value after an equals or colon sign on the same line is masked as well, while the rest of the line, the file, the pattern name and the line number still stand. A <code>-p</code> name that is not one of the four is treated as a custom regular expression itself, compiled once before the scan begins; exclusions match as globs against the full path and against the bare file name. Without <code>-r</code> only the top level of the directory is scanned. Findings never move the exit code: a scan that found secrets exits 0 exactly like a clean one, so the output text is the only signal a caller gets.</p>
+<p class="fault">Recorded traps, preserved in the README: the clone URL names the stale ShadowStrikeHQ org; the usage line is a placeholder naming no repository path; the parameter list omits the required positional repository_path and leaves -p and -e undescribed though the code's help text describes both; and the closing licence line reads Copyright (c) ShadowStrikeHQ while the LICENSE file is MIT.</p>
+
 </section>
-<hr class="divider">
-<section class="bay" id="patterns">
-<h2>First Match per Pattern per Line</h2>
-<p>The four named patterns, given by name and by shape in words, and never by any found value:</p>
-<table>
-<tr><th>Pattern</th><th>Shape in words</th></tr>
-<tr><td>API_KEY</td><td>A run of letters and digits between thirty two and forty five characters long.</td></tr>
-<tr><td>PASSWORD</td><td>The words password, pwd, and secret themselves, which is why the value after the sign must also be masked when only the keyword has matched.</td></tr>
-<tr><td>AWS_ACCESS_KEY_ID</td><td>A fixed prefix followed by sixteen characters from a stated alphabet of capitals and digits.</td></tr>
-<tr><td>AWS_SECRET_ACCESS_KEY</td><td>Any run of forty characters from its stated alphabet.</td></tr>
-</table>
-<div class="callout"><h3>Forty Characters Is a Shape and Not a Verdict</h3>
-<p>The forty character shape will also match hashes and long identifiers that are not secrets at all, as the code itself warns in its own comment, so every hit under that name must be judged by hand. A further rule: only the first match of each pattern on a line is recorded, so a line holding two different keys reports one of them per pattern.</p></div>
+<section class="bay">
+<img class="wide" src="assets/banner.png" alt="Opened oysters ranked in rows along a sorting table on a boat deck, one worker lifting a pearl toward a brass bowl and another holding a plain cloth, a soft signless harbour behind">
 </section>
-<hr class="divider">
-<section class="bay" id="path">
-<h2>The Path, and the Manner of Walking It</h2>
-<div class="callout"><h3>The README Names No Repository Path</h3>
-<p>The README usage line is the single line <code>./codeintel-secrets-scanner [params]</code>, printed here as printed and flagged as a placeholder, because it names no repository path at all. The parser requires a positional repository path as its first argument and ends with exit 1 and a logged error when that path is not a valid directory.</p></div>
-<p>Without the recursive flag the scan reads only the files at the top level of that directory, listed in place. With the recursive flag it walks the whole tree below it. The word recursively in any short description of this tool is true only when the flag is given, and that qualification stays attached to the claim wherever the claim appears.</p>
-</section>
-<hr class="divider">
-<section class="bay" id="settings">
-<h2>Settings, in README Order</h2>
-<table>
-<tr><th>Flag</th><th>README entry</th><th>Code account</th></tr>
-<tr><td><code>-h</code></td><td>Show help message and exit</td><td>Fully described.</td></tr>
-<tr><td><code>-p</code></td><td>No description provided</td><td>Takes a list of names drawn from the four default patterns or, for any name that is not among them, a custom regular expression itself, compiled once before the scan begins, so an invalid expression ends the run with exit 1 before any file is read.</td></tr>
-<tr><td><code>-e</code></td><td>No description provided</td><td>Takes file patterns matched as globs, against the full path and against the bare file name, so that a pattern of the starred extension kind excludes as a keeper would expect.</td></tr>
-<tr><td><code>-v</code></td><td>Enable verbose output.</td><td>Fully described.</td></tr>
-<tr><td><code>-r</code></td><td>Scan directories recursively</td><td>Fully described.</td></tr>
-<tr><td><code>-o</code></td><td>Output file to save results.</td><td>Fully described, with the added fact that a failure to write that file ends the run with exit 1.</td></tr>
-</table>
-<div class="callout"><h3>Two Labels Left Blank in the README</h3>
-<p>The patterns flag and the exclude flag are each listed in the README with the words No description provided. Their code accounts stand beside the blanks above, not over them.</p></div>
-</section>
-<hr class="divider">
-<section class="bay" id="outcome">
-<h2>A Scan That Finds Secrets Still Exits 0</h2>
-<p>A scan that finds secrets and a scan that finds none both end with exit 0. The printed or saved lines are the only signal a caller receives. The sentence No secrets found appears only as a verbose log line, not as a separate verdict.</p>
-<p>Install, as printed: <code>git clone https://github.com/ShadowStrikeHQ/codeintel-secrets-scanner</code></p>
-<p class="fault">Fault, flagged in place: the clone line names ShadowStrikeHQ and not ShadowGuard-AI. No change of directory and no dependency step follows it in the README, and none is invented here.</p>
-<p>Licence line, as printed: Copyright (c) ShadowStrikeHQ</p>
-<p class="fault">Fault, flagged in place: the licence line carries the same wrong house name as the clone line, and the README gives no licence name, so none is added.</p>
-<p>Recorded as printed: the README title capitalises the name as codeintel-Secrets-Scanner where the repository slug is all lower case.</p>
-</section>
+<section class="bay"><h2 style="color:var(--ink)">Diagrams</h2><img class="wide" src="assets/architecture.png" alt="Architecture diagram"><img class="wide" src="assets/flowchart.png" alt="Flowchart diagram"><img class="wide" src="assets/product-map.png" alt="Product map diagram"></section>
 </main>
-<footer><p>End of the walk. The last pitcher stands with its hood unmoved, holding what it holds without display.</p></footer>
+<footer>
+<p>ShadowGuard-AI. Source and full documentation in the repository README. Fonts: Courgette and Kosugi Maru, self-hosted under their licences in the fonts folder.</p>
+</footer>
 </body>
 </html>

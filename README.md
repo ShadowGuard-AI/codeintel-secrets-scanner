@@ -1,12 +1,12 @@
-![Boardwalk over black water: one pitcher close and large at the walk edge, more pitchers standing in the water, sundew rosettes flat on the margins, canopy light in coins, no lettering anywhere](intro-banner.png)
+![Hands covering a found pearl with a twist of plain cloth close up, an opened oyster shell beside it and rows of opened shells behind](intro-banner.png)
 
 Herbarium label plate: the title below is set in Besley in loam on cream, ruled like a specimen label, with a tiny pitcher glyph as the section marker throughout, kept at punctuation size.
 
 # codeintel-Secrets-Scanner
 
-![One hooded pitcher plant above dark water, rust tube, gold hood rim, the dark line held inside the mouth, the name lettered below in the herbarium hand](logo.png)
+![One opened oyster shell with a pearl resting in a small plain brass cup beside it on wet deck boards, inside a pale ring](logo.png)
 
-![Boardwalk crossing a bog at canopy light, pitchers on both sides, sundews on the margins, and one weathered sign on the rail carrying the name codeintel-secrets-scanner](banner.png)
+![Opened oysters ranked in rows along a sorting table on a boat deck, one worker lifting a pearl toward a brass bowl and another holding a plain cloth, a soft signless harbour behind](banner.png)
 
 ![The bog in three depths: canopy light strengthening and weakening in coins, sundew beads taking a cream highlight one by one, a tendril lengthening slowly along the rail, and the dark line inside the pitcher mouth holding steady](scene.svg)
 
